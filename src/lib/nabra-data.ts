@@ -1,5 +1,5 @@
 export type Dialect = "saudi" | "iraqi";
-export type Kind = "word" | "hook" | "campaign";
+export type Kind = "word" | "phrase" | "hook" | "campaign";
 
 export interface LibraryEntry {
   id: string;
@@ -8,6 +8,27 @@ export interface LibraryEntry {
   context: string;
   text: string;
   note: string; // when it sounds natural / what to avoid
+  meaning?: string;
+  sourceId?: string;
+  nativeReview?: { reviewer: string; dialect: Dialect; date: string; evidenceUrl: string };
+}
+
+export const SOURCES: Record<string, { title: string; url: string }> = {};
+
+export function isNativeReviewed(entry: LibraryEntry): boolean {
+  const review = entry.nativeReview;
+  return Boolean(review && review.dialect === entry.dialect && review.reviewer.trim() && /^\d{4}-\d{2}-\d{2}$/.test(review.date) && /^https:\/\//.test(review.evidenceUrl));
+}
+
+export function filterLibrary(entries: LibraryEntry[], filters: { query: string; kind: string; status: string }): LibraryEntry[] {
+  const normalize = (text: string) => text.toLowerCase().normalize("NFKC").replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[أإآ]/g, "ا").trim();
+  const query = normalize(filters.query);
+  return entries.filter((entry) =>
+    (filters.kind === "all" || entry.kind === filters.kind) &&
+    (filters.status !== "reviewed" || isNativeReviewed(entry)) &&
+    (filters.status !== "unverified" || !isNativeReviewed(entry)) &&
+    (!query || normalize(`${entry.text} ${entry.meaning ?? ""} ${entry.context} ${entry.note}`).includes(query))
+  );
 }
 
 // Sample library (not native-reviewed yet — demo data only).

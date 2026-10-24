@@ -9,6 +9,8 @@ export const Route = createFileRoute("/dashboard")({
       { name: "description", content: "Track rounds of amends per piece of copy, week by week." },
       { property: "og:title", content: "Rounds of amends dashboard — Nabra" },
       { property: "og:description", content: "See how Nabra reduces client amends week by week." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Dashboard,
