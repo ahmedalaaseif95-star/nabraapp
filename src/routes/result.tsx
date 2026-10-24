@@ -11,6 +11,8 @@ export const Route = createFileRoute("/result")({
       { name: "description", content: "Review, edit and approve AI-written dialect copy before it's used." },
       { property: "og:title", content: "Review your copy — Nabra" },
       { property: "og:description", content: "Every result is approved by a person before use." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: ResultPage,

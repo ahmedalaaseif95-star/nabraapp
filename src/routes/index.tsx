@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useApp } from "@/lib/app-state";
 import { LIBRARY, type Dialect } from "@/lib/nabra-data";
 import { generateCopy } from "@/lib/generate.functions";
+import { PhraseLibrary } from "@/components/PhraseLibrary";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -14,6 +15,8 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Turn your idea into native Saudi or Iraqi marketing copy with a curated dialect phrase library." },
       { property: "og:title", content: "Nabra — Write copy in the right Arabic dialect" },
       { property: "og:description", content: "Native Saudi and Iraqi copy for Egyptian content writers." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: InputPage,
@@ -32,8 +35,6 @@ function InputPage() {
   const entries = LIBRARY.filter((e) => e.dialect === draft.dialect);
 
   const setDialect = (d: Dialect) => setDraft({ ...draft, dialect: d, selected: [] });
-  const toggle = (id: string) =>
-    setDraft({ ...draft, selected: draft.selected.includes(id) ? draft.selected.filter((x) => x !== id) : [...draft.selected, id] });
 
   const useSample = () =>
     setDraft({ ...draft, ...SAMPLE, selected: entries.filter((e) => e.context === "Food" || e.context === "Offers").map((e) => e.id) });
@@ -53,7 +54,6 @@ function InputPage() {
     }
   };
 
-  const kindLabel = { word: t.word, hook: t.hook, campaign: t.campaign };
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-8 md:py-12">
@@ -103,27 +103,7 @@ function InputPage() {
           </Button>
         </div>
 
-        <aside className="rounded-2xl border bg-card p-5">
-          <h2 className="font-semibold">{t.library}</h2>
-          <p className="mb-4 text-sm text-muted-foreground">{t.library_hint}</p>
-          <ul className="space-y-2">
-            {entries.map((e) => {
-              const on = draft.selected.includes(e.id);
-              return (
-                <li key={e.id}>
-                  <button onClick={() => toggle(e.id)}
-                    className={`w-full rounded-xl border p-3 text-start transition-colors ${on ? "border-primary bg-secondary" : "hover:bg-muted"}`}>
-                    <div className="flex items-center justify-between gap-2">
-                      <span dir="rtl" className="font-medium">{e.text}</span>
-                      <span className="rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground">{kindLabel[e.kind]} · {e.context}</span>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground" dir="ltr">{e.note}</p>
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </aside>
+        <PhraseLibrary />
       </div>
     </main>
   );
