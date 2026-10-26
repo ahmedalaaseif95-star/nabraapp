@@ -4,7 +4,11 @@ export const SADA_LICENSE = "CC BY-NC-SA 4.0";
 export const PREVIEW_DIALECTS = ["Najdi", "Hijazi"];
 const UNCERTAIN = ["More than 1 speaker", "More than one speaker", "Unknown", "Notapplicable", "", "Khaliji"];
 
-export type Row = Record<string, string | undefined>;
+export interface Row {
+  [key: string]: string | undefined;
+  FileName?: string; SegmentID?: string; GroundTruthText?: string; ProcessedText?: string; SpeakerDialect?: string;
+  ShowName?: string; Category?: string; SegmentStart?: string; SegmentEnd?: string;
+}
 
 export function normalizeArabic(text: string): string {
   return text.normalize("NFKC").replace(/[\u064B-\u065F\u0670\u0640]/g, "").replace(/[أإآ]/g, "ا").replace(/ى/g, "ي").replace(/[^\p{L}\p{N}\s]/gu, " ").replace(/\s+/g, " ").trim().toLowerCase();
