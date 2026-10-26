@@ -17,7 +17,7 @@ describe("SADA import rules", () => {
     expect(toSegment({ FileName: "a", SegmentID: "1", GroundTruthText: " " }, "u").flag_empty_text).toBe(true);
   });
   it("previews only Najdi/Hijazi, max 100", () => {
-    const rows = Array.from({ length: 300 }, (_, i) => ({ SpeakerDialect: ["Najdi", "Khaliji", "Hijazi"][i % 3] }));
+    const rows = Array.from({ length: 300 }, (_, i) => ({ SpeakerDialect: ["Najdi", "Khaliji", "Hijazi"][i % 3] as string }));
     const p = previewRows(rows);
     expect(p).toHaveLength(100);
     expect(p.every((r) => r.SpeakerDialect !== "Khaliji")).toBe(true);
