@@ -14,16 +14,103 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      source_segments: {
+        Row: {
+          category: string | null
+          commercial_use_allowed: boolean
+          file_name: string
+          flag_empty_text: boolean
+          flag_uncertain_dialect: boolean
+          ground_truth_text: string | null
+          id: string
+          imported_at: string
+          imported_by: string | null
+          license: string
+          processed_text: string | null
+          search_text: string | null
+          segment_end: number | null
+          segment_id: string
+          segment_start: number | null
+          show_name: string | null
+          source: string
+          speaker_dialect: string | null
+        }
+        Insert: {
+          category?: string | null
+          commercial_use_allowed?: boolean
+          file_name: string
+          flag_empty_text?: boolean
+          flag_uncertain_dialect?: boolean
+          ground_truth_text?: string | null
+          id?: string
+          imported_at?: string
+          imported_by?: string | null
+          license: string
+          processed_text?: string | null
+          search_text?: string | null
+          segment_end?: number | null
+          segment_id: string
+          segment_start?: number | null
+          show_name?: string | null
+          source: string
+          speaker_dialect?: string | null
+        }
+        Update: {
+          category?: string | null
+          commercial_use_allowed?: boolean
+          file_name?: string
+          flag_empty_text?: boolean
+          flag_uncertain_dialect?: boolean
+          ground_truth_text?: string | null
+          id?: string
+          imported_at?: string
+          imported_by?: string | null
+          license?: string
+          processed_text?: string | null
+          search_text?: string | null
+          segment_end?: number | null
+          segment_id?: string
+          segment_start?: number | null
+          show_name?: string | null
+          source?: string
+          speaker_dialect?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      claim_first_admin: { Args: never; Returns: boolean }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +237,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
